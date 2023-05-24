@@ -3,21 +3,20 @@ import { useEffect, useState } from 'react';
 import styles from './app.module.css';
 
 import NxWelcome from './nx-welcome';
+import '../assets/css/app.css'
+import NavBar from './components/NavBar';
+import Footer from './components/Footer';
+import Order from './components/Order';
 
 export function App() {
 
   
-  const [message,setMessage] = useState("");
-  useEffect(() => {
-    fetch("/api")
-    .then(response => response.json())
-    .then(response => setMessage(response.message) )
-  })
   return (
-    <div>
-      {/*<NxWelcome title="client" />*/}
-      <h1>Respuesta de la API: {message}</h1>
-    </div>
+   <>
+      <NavBar/>
+      <Order/>
+      <Footer/>
+   </>
   );
 }
 
