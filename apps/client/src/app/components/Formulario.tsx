@@ -18,37 +18,29 @@ function Formulario() {
 
 
     const formData = new FormData(e.currentTarget)
-    const data = {
+      const data = {
       nombre: formData.get("nombre"),
       cedula: formData.get("cedula"),
       direccion: formData.get("direccion"),
       correo_eletronico: formData.get("correo_electronico"),
       pedido: formData.get("pedido")
-  }
+    }
     
-    fetch('http://localhost/api/')
-    .then(response => console.log(response.json()))
-    .then(response => console.log(response))
 
-
-
-    fetch('http://localhost:3000/api/orders', {
+    console.log(JSON.stringify(data))
+    fetch('/api/orders', {
       method: 'POST',
-      body: JSON.stringify({
-          nombre: formData.get("nombre"),
-          cedula: formData.get("cedula"),
-          direccion: formData.get("direccion"),
-          correo_eletronico: formData.get("correo_electronico"),
-          pedido: formData.get("pedido")
-      }),
-      headers: {
+      body: JSON.stringify(data),
+      headers: new Headers({
         'Content-Type': 'application/json'
-      }
+      })  
     })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Form submitted successfully:', data);
-        // Aquí puedes realizar acciones adicionales después de enviar el formulario
+      .then(response => {
+        if(response.status === 201){
+          alert("Enviado correctamente!")
+          return 
+        }
+        alert("Hubo un error en el envio del pedido, por favor intenta denuevo.")
       })
       .catch(error => {
         console.error('Error submitting form:', error);
