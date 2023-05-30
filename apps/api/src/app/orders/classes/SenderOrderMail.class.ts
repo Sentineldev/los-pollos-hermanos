@@ -1,10 +1,10 @@
-import { CreateOrderDto } from "../dto/create-order.dto";
 import { SenderOrder } from "./SenderOrder.class";
 import {Injectable} from "@nestjs/common";
 
 import { InternalServerErrorException } from "@nestjs/common";
 import { createTransport, Transporter} from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
+import { Order } from "./Order.class";
 
 
 @Injectable()
@@ -30,7 +30,7 @@ export class SenderOrderMail extends SenderOrder{
         return transporter
     }
 
-    private makeTemplate(orderData: CreateOrderDto): string{
+    private makeTemplate(orderData: Order): string{
         return `
         <div style=" border-radius:0.45rem;  background-color: #F2E205; font-family: sans-serif;" class="mail-body">
             <h1 style="padding:1rem; color:#021F59; font-family:sans-serif; border-bottom:3px solid #aaaa;">Nuevo Pedido</h1>
@@ -48,7 +48,7 @@ export class SenderOrderMail extends SenderOrder{
         `
     }
 
-    async enviar(orderData: CreateOrderDto){
+    async enviar(orderData: Order){
         const transporter = await this.makeTransport();
 
         await transporter.sendMail({
