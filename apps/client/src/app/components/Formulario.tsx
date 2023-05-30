@@ -18,29 +18,35 @@ function Formulario() {
 
 
     const formData = new FormData(e.currentTarget)
-    const data = {
+      const data = {
       nombre: formData.get("nombre"),
       cedula: formData.get("cedula"),
       direccion: formData.get("direccion"),
       correo_eletronico: formData.get("correo_electronico"),
       pedido: formData.get("pedido")
-  }
+    }
     
-  console.log(data)
-    
-    fetch("/api")
-      .then(response => response.json())
-      .then(response => console.log(response))
-      .catch(error => console.log(`Error: ${error}`))
 
-      fetch(`/api/orders`,{
-        method:"POST",
-        body: JSON.stringify(data),
+
+    console.log(JSON.stringify(data))
+    fetch('/api/orders', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })  
+    })
+      .then(response => {
+        if(response.status === 201){
+          alert("Enviado correctamente!")
+          return 
+        }
+        alert("Hubo un error en el envio del pedido, por favor intenta denuevo.")
       })
-      .then(response => response.json())
-      .then(response => console.log(response))
-      .catch(error => console.log(`Error submiting: ${error}`))
-
+      .catch(error => {
+        console.error('Error submitting form:', error);
+        // Aquí puedes manejar el error en caso de que ocurra algún problema al enviar el formulario
+      });
   };
 
   return (
