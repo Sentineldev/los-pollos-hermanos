@@ -38,7 +38,7 @@ function Formulario() {
     })
       .then(response => {
         if(response.status === 201){
-          alert("Enviado correctamente!")
+          console.log("Enviado correctamente!");
           return 
         }
         alert("Hubo un error en el envio del pedido, por favor intenta denuevo.")
