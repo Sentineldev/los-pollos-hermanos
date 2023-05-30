@@ -1,5 +1,5 @@
 import { PartialType } from "@nestjs/mapped-types";
-import { Order } from "../entities/order.entity";
+import { Order } from "../classes/Order.class";
 
 export class CreateOrderDto extends PartialType(Order) {
 
