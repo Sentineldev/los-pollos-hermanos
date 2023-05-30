@@ -27,6 +27,7 @@ function Formulario() {
     }
     
 
+
     console.log(JSON.stringify(data))
     fetch('/api/orders', {
       method: 'POST',
