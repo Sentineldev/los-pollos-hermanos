@@ -29,7 +29,6 @@ export class SenderOrderMail extends SenderOrder{
          
         return transporter
     }
-
     private makeTemplate(orderData: Order): string{
         return `
         <div style=" border-radius:0.45rem;  background-color: #F2E205; font-family: sans-serif;" class="mail-body">
@@ -47,15 +46,40 @@ export class SenderOrderMail extends SenderOrder{
         </div>
         `
     }
+    private makeTemplateCliente(orderData: Order): string{
+        return `
+        <div style=" border-radius:0.45rem;  background-color: #F2E205; font-family: sans-serif;" class="mail-body">
+            <h1 style="padding:1rem; color:#021F59; font-family:sans-serif; border-bottom:3px solid #aaaa;">Hemos Recibido tu pedido, nos pondremos en contacto contigo pronto!</h1>
+            <div style="padding:0 1rem;">
+                <p style="font-size:1rem; font-weight:500;">Hola! revisa lso siguientes datos para que todo este en orden :)</p>
+                <p style="font-size:1rem; font-weight:500;">Tu Nombre: ${orderData.nombre}</p>
+                <p style="font-size:1rem; font-weight:500;">La Cedula: ${orderData.cedula}</p>
+                <p style="font-size:1rem; font-weight:500;">El Pedido: ${orderData.pedido}</p>
+                <p style="font-size:1rem; font-weight:500;">La Direccion: ${orderData.direccion}</p>
+            </div>
+            <div style="background-color:#05C7F2; margin:0; border-bottom-left-radius: 0.4rem; border-bottom-right-radius: 0.4rem;">
+                <h3 style="text-align:center; font-size:1rem; padding:1rem;">Los Pollos Hermanos</h3>
+            </div>
+        </div>
+        `
+    }
 
     async enviar(orderData: Order){
         const transporter = await this.makeTransport();
+        var correo = `${orderData.correo_electronico}`;
 
         await transporter.sendMail({
             from:orderData.nombre,
-            to:'jesusfiguera20@gmail.com',
+            to:'ulisesjhm1510@gmail.com',
             subject:`Pedido de: ${orderData.nombre}`,
             html: this.makeTemplate(orderData)
         })
+        await transporter.sendMail({
+            from:orderData.nombre,
+            to:orderData.correo_electronico,    
+            subject:`Pedido de: ${orderData.nombre}`,
+            html: this.makeTemplateCliente(orderData)
+        })
+
     }
 }
