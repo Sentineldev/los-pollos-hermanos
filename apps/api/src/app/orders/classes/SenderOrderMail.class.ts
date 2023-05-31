@@ -11,9 +11,9 @@ import { Order } from "./Order.class";
 export class SenderOrderMail extends SenderOrder{
 
 
-
+    private correo_predeterminado = "jesusfiguera20@gmail.com";
     private async makeTransport(){
-        
+
         const transporter: Transporter<SMTPTransport.SentMessageInfo> = createTransport({
             host:'smtp.gmail.com',
             port:465,
@@ -24,9 +24,9 @@ export class SenderOrderMail extends SenderOrder{
             }
         })
         const verification: boolean = await transporter.verify();
-    
+
         if(!verification){ throw new InternalServerErrorException('Error en la verificacion del correo master.') }
-         
+
         return transporter
     }
     private makeTemplate(orderData: Order): string{
@@ -37,7 +37,7 @@ export class SenderOrderMail extends SenderOrder{
                 <p style="font-size:1rem; font-weight:500;">Cliente: ${orderData.nombre}</p>
                 <p style="font-size:1rem; font-weight:500;">Cedula: ${orderData.cedula}</p>
                 <p style="font-size:1rem; font-weight:500;">Correo Electronico: ${orderData.correo_electronico}</p>
-                <p style="font-size:1rem; font-weight:500;">Pedido: ${orderData.pedido}</p>
+                <pre style="font-size:1rem; font-weight:500;">Pedido: ${orderData.pedido}</pre>
                 <p style="font-size:1rem; font-weight:500;">Direccion: ${orderData.direccion}</p>
             </div>
             <div style="background-color:#05C7F2; margin:0; border-bottom-left-radius: 0.4rem; border-bottom-right-radius: 0.4rem;">
@@ -51,10 +51,10 @@ export class SenderOrderMail extends SenderOrder{
         <div style=" border-radius:0.45rem;  background-color: #F2E205; font-family: sans-serif;" class="mail-body">
             <h1 style="padding:1rem; color:#021F59; font-family:sans-serif; border-bottom:3px solid #aaaa;">Hemos Recibido tu pedido, nos pondremos en contacto contigo pronto!</h1>
             <div style="padding:0 1rem;">
-                <p style="font-size:1rem; font-weight:500;">Hola! revisa lso siguientes datos para que todo este en orden :)</p>
+                <p style="font-size:1rem; font-weight:500;">Hola! revisa los siguientes datos para que todo este en orden :)</p>
                 <p style="font-size:1rem; font-weight:500;">Tu Nombre: ${orderData.nombre}</p>
                 <p style="font-size:1rem; font-weight:500;">La Cedula: ${orderData.cedula}</p>
-                <p style="font-size:1rem; font-weight:500;">El Pedido: ${orderData.pedido}</p>
+                <pre style="font-size:1rem; font-weight:500;">El Pedido: ${orderData.pedido}</pre>
                 <p style="font-size:1rem; font-weight:500;">La Direccion: ${orderData.direccion}</p>
             </div>
             <div style="background-color:#05C7F2; margin:0; border-bottom-left-radius: 0.4rem; border-bottom-right-radius: 0.4rem;">
@@ -66,17 +66,16 @@ export class SenderOrderMail extends SenderOrder{
 
     async enviar(orderData: Order){
         const transporter = await this.makeTransport();
-        var correo = `${orderData.correo_electronico}`;
 
         await transporter.sendMail({
             from:orderData.nombre,
-            to:'ulisesjhm1510@gmail.com',
+            to:this.correo_predeterminado,
             subject:`Pedido de: ${orderData.nombre}`,
             html: this.makeTemplate(orderData)
         })
         await transporter.sendMail({
             from:orderData.nombre,
-            to:orderData.correo_electronico,    
+            to:orderData.correo_electronico,
             subject:`Pedido de: ${orderData.nombre}`,
             html: this.makeTemplateCliente(orderData)
         })
