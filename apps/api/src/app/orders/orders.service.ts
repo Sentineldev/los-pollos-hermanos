@@ -12,7 +12,7 @@ export class OrdersService {
    create(createOrderDto: CreateOrderDto) {
     try {
       this.senderEmail.enviar(createOrderDto);
-      return "Email sent successfully"    
+      return "Email sent successfully"
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
