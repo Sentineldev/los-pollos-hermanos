@@ -1,18 +1,17 @@
-@font-face {
-    font-family: 'Mexcellent';
-    src: url('../../fonts/Mexcellent/mexcellent_rg.otf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
-  
   #root {
     max-width: 1280px;
-    margin: 0 auto;
+    margin: 0px auto;
     padding: 2rem;
     text-align: center;
-    font-family: "Mexcellent";
+    font-family: "helvetica";
+
   }
-  
+  .navbar{
+    margin-top: -35px !important;
+}
+.footer{
+  margin-bottom: -35px !important;
+}
   .logo {
     height: 6em;
     padding: 1.5em;
@@ -49,14 +48,63 @@
     color: #888;
   }
   
-  @media screen and (min-width: 700px) and (max-width: 1023px) {
+  @media screen and (min-width: 0px) and (max-width: 1024px) {
     .lazamania {
       display: none;
     }
+
+    .form {
+      margin-left: 0px !important;
+    }
+    
   }
   
-  @media screen and (max-width: 1023px) {
-    .mi-div {
-      width: 100% !important;
-    }
+  
+
+  
+
+  .hero-content{
+    min-width: 100px !important;
   }
+  
+  .lazamania{
+    position: fixed;
+    width: 30%;
+    margin-left: -45%;
+    margin-top: -32%;
+    border: none;
+  
+  }
+
+  .form{
+    position: fixed;
+    width: 100% !important;
+    
+    margin-left: 80%;
+    
+     
+  }
+  .form textarea{
+    resize: none;
+  }
+
+  .form .card-body{
+    margin-top: -20px !important;
+  }
+
+ 
+
+/*Efecto flotando*/
+.lazamania  { 
+    animation-name: floating;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    
+}
+ 
+@keyframes floating {
+    0% { transform: translate(0,  0px); }
+    50%  { transform: translate(0, 15px); }
+    100%   { transform: translate(0, -0px); }   
+}

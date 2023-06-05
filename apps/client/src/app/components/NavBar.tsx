@@ -1,11 +1,14 @@
 import logo from "../../assets/img/l.png";
+import Maap from "./Maap";
+
+
 
 
 const NavBar = () => {
   return (
     <>
       {/* Menu Tlf */}
-      <div className="navbar bg-warning rounded font-medium text-neutral">
+      <div className="navbar bg-warning rounded font-bold text-neutral">
         <div className="navbar-start">
           <div className="dropdown">
             <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -14,11 +17,12 @@ const NavBar = () => {
             <ul tabIndex={0} className="menu menu-compact dropdown-content mt-2 p-2 shadow bg-warning rounded-box w-50">
               <li><a>Home</a></li>
               <li> <a>Products</a> </li>
-              <li><a>Nosotros</a></li>
+              <li><a onClick={()=>window.my_modal_4.showModal()} >Nosotros</a></li>
             </ul>
           </div>
           <img className='w-16 cursor-pointer ml-12 ' src={logo} alt="Pollos_Hermanos" />
         </div>
+        
 
         {/* Menu desktop */}
         <div className="navbar-center hidden lg:flex">
@@ -26,11 +30,13 @@ const NavBar = () => {
             <li><a>Home</a></li>
             <li> <a>Products</a> </li>
             <li><a>Nosotros</a></li>
+            
           </ul>
         </div>
         <div className="navbar-end">
-          <a className="btn  btn-primary font-bold">Login</a>
+          <a className="btn w-1/3  btn-primary text-neutral font-bold">Login</a>
         </div>
+        
       </div>
 
     </>
