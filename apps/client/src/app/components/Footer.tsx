@@ -4,11 +4,11 @@ export const Footer = () => {
   return (
     <>
 
-      <footer className="footer footer-center font-bold p-2 bg-primary text-base-content  rounded">
+      <footer className="footer footer-center font-bold p-2 bg-warning text-base-content  text-neutral rounded">
         <div className="grid grid-flow-col gap-4">
           <a className="link link-hover">Home</a>
           <a className="link link-hover">Products</a>
-          <a className="link link-hover">Nosotros</a>
+          <a className="link link-hover">Abount</a>
         </div>
         <div>
           <div className="grid grid-flow-col gap-4">
