@@ -55,7 +55,7 @@ function Formulario() {
 
       nuevo_pedido = nuevo_pedido.concat(aux)
     }
-    nuevo_pedido = nuevo_pedido.concat("\n---------------------------------------------------------------\n")
+    nuevo_pedido = nuevo_pedido.concat("---------------------------------------------------------------------\n")
     nuevo_pedido = nuevo_pedido.concat(`Total a cancelar: ${total} $`);
     if(!(listaPedido.length === 0)){
       setPedido(nuevo_pedido)
@@ -120,7 +120,7 @@ function Formulario() {
       if(response.status === 200 || response.status === 201){
         setListaPedido([]);
         setPedido("");
-        setResponse("Su pedido esta en proceso, revise su correo para verificar su pedido, gracias! 😊");
+        setResponse("\n Su pedido esta en proceso, revise su correo para verificar su pedido, gracias! 😊 \n");
         setValues({
           nombre: "",
           cedula: "",
@@ -140,52 +140,54 @@ function Formulario() {
 
 
   return (
-        <form className="tracking-wide font-bold text-lg" onSubmit={handleSubmit}>
+        <form className="tracking-wide font-bold text-lg  " onSubmit={handleSubmit}>
+          <div className='flex justify-between'>
+                        <div className="mb-1">
+                            <label className="label" htmlFor="nombre"> Nombre:</label>
+                            <input required className="input  text-info input-bordered w-full" type="text" id="nombre" name="nombre" value={values.nombre} onChange={handleChange} placeholder = "nombre y apellido" />
+                        </div>
 
-            <div className="mb-2">
-                <label className="label" htmlFor="nombre"> Nombre:</label>
-                <input required className="input  text-warning input-bordered w-full" type="text" id="nombre" name="nombre" value={values.nombre} onChange={handleChange} placeholder = "nombre y apellido" />
-            </div>
-
-            <div className="mb-2">
-                <label className="label" htmlFor="cedula">Cedula:</label>
-                <input required className="input text-warning input-bordered w-full" type="number" id="cedula" name="cedula" value={values.cedula} onChange={handleChange} placeholder = "numero de cedula:"/>
-            </div>
-
-            <div className="mb-2">
+                        <div className="mb-1 ml-1">
+                            <label className="label" htmlFor="cedula">Cedula:</label>
+                            <input required className="input text-info input-bordered w-full" type="number" id="cedula" name="cedula" value={values.cedula} onChange={handleChange} placeholder = "numero de cedula:"/>
+                        </div>
+           </div>
+            
+           <div className='flex justify-between'>
+            <div className="mb-1 flex-initial w-72">
                 <label className="label" htmlFor="direccion">Direccion: </label>
-                <textarea required className="input text-warning input-bordered  w-full" id="direccion"  name="direccion" rows={4} value={values.direccion} onChange={handleChange} placeholder = "Ubicacion para la entrega" ></textarea>
+                <textarea required className="input text-info input-bordered  w-full" id="direccion"  name="direccion" rows={1} value={values.direccion} onChange={handleChange} placeholder = "Ubicacion para la entrega" ></textarea>
             </div>
 
-            <div className="mb-2">
+            <div className="mb-1 flex-auto  ml-2 ">
                 <label className="label" htmlFor="correo_electronico">Gmail:</label>
 
-                <input required className="input text-warning input-bordered w-full" id="correo_electronico" type="email" name="correo_electronico" value={values.correo_electronico} onChange={handleChange} placeholder = "Correo Electronico" />
+                <input required className="input text-info  input-bordered w-full" id="correo_electronico" type="email" name="correo_electronico" value={values.correo_electronico} onChange={handleChange} placeholder = "Correo Electronico" />
             </div>
+          </div>
 
 
-
-            <div className="mb-2">
+            <div className="mb-1">
                 <label className="label" htmlFor="pedido">Pedido: </label>
-                <div className='flex flex-col gap-2'>
+                <div className='flex flex-col  gap-2'>
                   {
                     listaPlatillos.map((platillo: Platillo) =>
-                      <div className='bg-white p-1 rounded-md px-4 shadow-lg shadow-slate-400'>
-                        <div className='flex flex-row w-fit align-middle items-center  rounded gap-2 '>
-                          <p className=''>{platillo.name}</p>
-                          <button type='button' onClick={(e) => BotonAgregarManejador(e,platillo)} className='btn btn-sm btn-success text-white text-xl rounded-full'>+</button>
-                          <button type='button' onClick={e => BotonRemoverManejador(e,platillo)} className='btn btn-sm btn-primary text-xl rounded-full'>-</button>
+                      <div className=' flex flex-row bg-base-100 text-info p-0  text-center rounded-md text-start px-4 shadow-lg shadow-slate-400'>
+                        
+                          <p className=' self-center col-span-2 text-base'>{platillo.name}</p>
+                          <button type='button' onClick={(e) => BotonAgregarManejador(e,platillo)} className=' mx-1 btn-circle btn text-2xl btn-ghost'>+</button>
+                          <button type='button' onClick={(e) => BotonRemoverManejador(e,platillo)} className=' mx-1 btn-circle text-2xl  btn btn-ghost '>-</button>
                         </div>
-                      </div>
+                      
 
                     )
                   }
                 </div>
 
-                <textarea className="textarea text-warning input-bordered w-full mt-3" id="pedido" name="pedido" rows={10} readOnly value={pedido} onChange={handleChange} placeholder = "Que deseas LLevar?" ></textarea>
+                <textarea className="textarea text-info input-bordered w-full mt-3" id="pedido" name="pedido" rows={7} readOnly value={pedido} onChange={handleChange} placeholder = "Que deseas LLevar?" ></textarea>
             </div>
             {response.length > 0 ? <p>{response}</p> : <></>}
-            <button className="btn btn-primary w-full rounded" type="submit"> ENVIAR </button>
+            <button className="btn btn-primary text-neutral w-full rounded" type="submit"> ENVIAR </button>
         </form>
   );
 }
