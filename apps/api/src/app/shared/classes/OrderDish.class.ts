@@ -27,6 +27,10 @@ export class OrderDish{
     getDishBill(): number {
         return this.dish_bill;
     }
+    
+    getCount(): number {
+        return this.count;
+    }
 
     private calculateDishBill(): number {
         return this.dish.price * this.count;
