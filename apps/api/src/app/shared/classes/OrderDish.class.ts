@@ -1,5 +1,9 @@
-import { Order } from "./Order.class";
+//import { Order } from "./Order.class";
 import { Dish } from "./Dish.class";
+
+
+
+//Esta clase representa los platillos en la orden como tal, la cantidad, el 
 
 export class OrderDish{
     private dish: Dish;
@@ -11,12 +15,20 @@ export class OrderDish{
         this.dish = dish;
         this.count = count;
         //this.order = order;
-        this.dish_bill = 0;
+        this.dish_bill = this.calculateDishBill();
     }
 
 
 
+    getDish(): Dish {
+        return this.dish;
+    }
+
     getDishBill(): number {
+        return this.dish_bill;
+    }
+
+    private calculateDishBill(): number {
         return this.dish.price * this.count;
     }
 }

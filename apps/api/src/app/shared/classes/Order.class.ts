@@ -1,5 +1,11 @@
 
 
+
+/*
+
+
+Clase que representa una orden del restaurante realizada por un cliente.
+*/
 import { OrderDish } from "./OrderDish.class";
 export class Order{
 
@@ -21,21 +27,27 @@ export class Order{
         this.order_bill = 0;
         //this.dishes = dishes;
     }
-   
+    
+
+
     getBill(): number {
         return this.order_bill;
     }
+    getDishes(): OrderDish[]{
+        return this.dishes;
+    }
+    
+
+    //Se colocan los platillos en la orden y se calcula el monto a cancelar.
     setDishes(dishes: OrderDish[]) {
         this.dishes = dishes;
         this.order_bill = this.calculateOrderBill();
     }    
+    //Se encarga de calcular el monto a cancelar por el cliente segun los platillos que haya colocado en la orden.
     private calculateOrderBill(): number {
         
         let bill = 0
-        for(const dish of this.dishes){
-            bill+=dish.getDishBill();
-        }
-
+        this.dishes.forEach(dish => bill+= dish.getDishBill());
         return bill;
     }
 }
