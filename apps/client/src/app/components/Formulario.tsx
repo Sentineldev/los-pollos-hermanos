@@ -37,7 +37,8 @@ function Formulario() {
    //Actualiza el arreglo de platillos la primera vez que se inicia el componente.
    useEffect(()=>{
     const loadProducts = async () =>{
-      const request = await axios.get("/api/dish")
+      try {
+        const request = await axios.get("/api/dish")
       if(request.status === 200){
         
         const platillos: DatabaseDish[] = request.data;
@@ -50,6 +51,12 @@ function Formulario() {
           }
         })
         setListaPlatillos(lista_platillos);
+      }
+      else{
+        alert("No se pudieron cargar los platillos, intente denuevo 😢.")
+      }
+      } catch (error) {
+        alert("No se pudieron cargar los platillos, intente denuevo 😢.")
       }
 
     }
