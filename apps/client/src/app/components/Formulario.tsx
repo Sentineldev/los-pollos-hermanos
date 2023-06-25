@@ -1,6 +1,8 @@
-import React, { MouseEventHandler, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { toArray } from 'rxjs';
+import { DatabaseDish } from '../shared/interfaces/database-dish.interface';
+import { Order } from '../shared/classes/Order.class';
+import { OrderDish } from '../shared/classes/OrderDish.class';
 
 
 interface Platillo {
@@ -11,7 +13,7 @@ interface Platillo {
 }
 interface ElementoPedido{
   platillo: Platillo,
-  conteo: number
+  conteo: number,
 }
 
 function Formulario() {
@@ -23,20 +25,31 @@ function Formulario() {
     pedido:"",
     correo_electronico:""
     })
-    const [listaPlatillos,setListaPlatillos] = useState([]);
-    const [listaPedido,setListaPedido] = useState([]);
+    const [listaPlatillos,setListaPlatillos] = useState<Platillo[]>([]);
+    const [listaPedido,setListaPedido] = useState<ElementoPedido[]>([]);
     const [pedido, setPedido] = useState("");
     const [response,setResponse] = useState("")
 
+
    //FormData setFormData
 
+
+   //Actualiza el arreglo de platillos la primera vez que se inicia el componente.
    useEffect(()=>{
     const loadProducts = async () =>{
-
-      const request = await axios.get("/api/plate")
-
+      const request = await axios.get("/api/dish")
       if(request.status === 200){
-        setListaPlatillos(request.data)
+        
+        const platillos: DatabaseDish[] = request.data;
+        const lista_platillos: Platillo[] = platillos.map((elemento: DatabaseDish) => {
+          return { 
+            plate_id: String(elemento.dish_id),
+            name: elemento.name,
+            description: elemento.description,
+            price: elemento.price
+          }
+        })
+        setListaPlatillos(lista_platillos);
       }
 
     }
@@ -45,59 +58,81 @@ function Formulario() {
    },[])
 
 
+   //Genera un string con los detalles del pedido cada vez que se actualiza la lista.
    useEffect(() => {
-
-    let nuevo_pedido = ``;
-    let total = 0;
-    for(const elemento of listaPedido){
-      const aux = `${elemento.platillo.name} ${elemento.platillo.price} X ${elemento.conteo}\n`
-      total+= elemento.platillo.price * elemento.conteo;
-
-      nuevo_pedido = nuevo_pedido.concat(aux)
-    }
-    nuevo_pedido = nuevo_pedido.concat("---------------------------------------------------------------------\n")
-    nuevo_pedido = nuevo_pedido.concat(`Total a cancelar: ${total} $`);
-    if(!(listaPedido.length === 0)){
-      setPedido(nuevo_pedido)
-    }
-
+      setPedido(armarPedido());
    },[listaPedido])
 
+   //Limpia los campos una vez el pedido es enviado.
+   function reset(){
+    setListaPedido([]);
+    setPedido("");
+    setResponse("\n Su pedido esta en proceso, revise su correo para verificar su pedido, gracias! 😊 \n");
+    setValues({
+      nombre: "",
+      cedula: "",
+      direccion: "",
+      pedido:"",
+      correo_electronico:""
+      })
+   }
+
+   //Arma el string con los detalles del pedido.
+   function armarPedido(): string{
+    let pedido = "";
+    let total_a_cancelar = 0;
+
+    for(const elemento of listaPedido){
+      const sub_total = elemento.platillo.price * elemento.conteo;
+      console.log(sub_total)
+      const platillo_pedido = `${elemento.platillo.name} ${Number(elemento.platillo.price).toFixed(2)} $ X ${elemento.conteo}: ${Number(sub_total).toFixed(2)} $\n`
+      total_a_cancelar+=(sub_total);
+      pedido = pedido.concat(platillo_pedido);
+    }
+   
+    pedido = pedido.concat("---------------------------------------------------------------------\n");
+    pedido = pedido.concat(`Total a cancelar: ${Number(total_a_cancelar).toFixed(2)} $`);
+
+    return pedido;
+  }
+
+    //Obtiene el indice donde se encuentra el platillo en la lista del pedido.
+   function getPlateIndex(id: string): number{
+    for (let index = 0; index < listaPedido.length; index++) {
+      if(listaPedido[index].platillo.plate_id === id) {
+        return index;
+      }      
+    }
+    return -1;
+   }
+
+
+   //Se encarga de incrementar o agregar un platillo al pedido.
    function BotonAgregarManejador(e: any,platillo: Platillo){
 
-    const busqueda = listaPedido.find((elemento: ElementoPedido ) => elemento.platillo.plate_id === platillo.plate_id)
-
-    if(!busqueda){
-      const nueva_lista = [].concat(listaPedido)
-      nueva_lista.push({ platillo, conteo:1 })
-      setListaPedido(nueva_lista)
+    const indice = getPlateIndex(platillo.plate_id);
+    if(indice >= 0){
+      listaPedido[indice].conteo++;
     }
-    else {
-      const nueva_lista = listaPedido.map((elemento: ElementoPedido) => {
-        if(elemento.platillo.plate_id === platillo.plate_id){
-          elemento.conteo++;
-        }
-        return elemento
-      })
-      setListaPedido(nueva_lista);
+    else{
+      listaPedido.push({platillo, conteo:1});
     }
-
+    const nueva_lista = listaPedido.map(elemento => elemento);
+    setListaPedido(nueva_lista);
    }
+
+   //Se encargad de decrementar o remover por completo un platillo del pedido.
    function BotonRemoverManejador(e: any, platillo: Platillo){
 
-    const busqueda = listaPedido.find((elemento: ElementoPedido) => elemento.platillo.plate_id === platillo.plate_id );
+    const indice = getPlateIndex(platillo.plate_id);
 
-    if(busqueda){
-      const aux = listaPedido.map((elemento: ElementoPedido) => {
-        if(elemento.platillo.plate_id === platillo.plate_id){
-          elemento.conteo--;
-        }
-        return elemento
-      })
+    if(indice < 0) return;
 
-      const nueva_lista: any = aux.filter((elemento: ElementoPedido) => elemento.conteo > 0)
-      setListaPedido(nueva_lista);
-    }
+    listaPedido[indice].conteo--;
+    
+    const aux = listaPedido.filter(element => element.conteo !== 0);
+    const nueva_lista = aux.map(elemento => elemento);
+    setListaPedido(nueva_lista);
   }
 
 
@@ -111,31 +146,48 @@ function Formulario() {
     if(pedido === ""){
       return;
     }
-    try {
-      const formData: any = new FormData(e.target); // Obtén los datos del formulario
-      const requestData = Object.fromEntries(formData.entries()); // Convierte los datos del formulario en un objeto
 
-      const response = await axios.post('http://localhost:3000/api/orders', requestData); // Envía los datos a la API utilizando Axios
-      console.log(response.status)
+    const formData: any = new FormData(e.target); // Obtén los datos del formulario
+    const requestData = Object.fromEntries(formData.entries()); // Convierte los datos del formulario en un objeto
+    
+    //Inicializa un objeto con los detalles de la ornde.
+    const new_order = new Order();
+    new_order.setClientName(requestData.nombre);
+    new_order.setClientId(requestData.cedula);
+    new_order.setClientAddress(requestData.direccion);
+    new_order.setClientEmail(requestData.correo_electronico);
+    
+    let total_a_pagar = 0;
+
+
+    
+    for(const elemento of listaPedido){
+      total_a_pagar+=(elemento.conteo * elemento.platillo.price);
+    }
+    const dishes_order: OrderDish[] = listaPedido.map(elemento => {
+      return new OrderDish(Number(elemento.platillo.plate_id),elemento.conteo);
+    })
+    new_order.setDishes(dishes_order);
+    new_order.setOrderBill(total_a_pagar);
+
+    const data = JSON.stringify(new_order);
+
+    try {
+      const response = await axios.post('/api/order',data,{
+        headers:{ 'Content-Type':'application/json' }
+      }); // Envía los datos a la API utilizando Axios
+
       if(response.status === 200 || response.status === 201){
-        setListaPedido([]);
-        setPedido("");
-        setResponse("\n Su pedido esta en proceso, revise su correo para verificar su pedido, gracias! 😊 \n");
-        setValues({
-          nombre: "",
-          cedula: "",
-          direccion: "",
-          pedido:"",
-          correo_electronico:""
-          })
+        reset();
       }
-      // Maneja la respuesta de la API según tus necesidades
-      console.log(response.data); // Ejemplo: imprime la respuesta en la consola
+      else{
+        setResponse("Hubo un error al realizar su pedido 😢. Por favor intente denuevo ");
+      }
+      
     } catch (error) {
       setResponse("Hubo un error al realizar su pedido 😢. Por favor intente denuevo ");
-      // Maneja el error según tus necesidades
-      console.error(error);
     }
+    
   };
 
 
