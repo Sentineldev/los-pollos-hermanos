@@ -25,7 +25,7 @@ export class Order{
         this.email = email;
         this.address = address;
         this.order_bill = 0;
-        //this.dishes = dishes;
+        this.dishes = [];
     }
     
 
