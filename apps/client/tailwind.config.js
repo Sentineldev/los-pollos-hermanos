@@ -21,23 +21,23 @@ module.exports = {
         
         mytheme: {
 
-          "primary": "#F20519",
+          "primary": "#021F59", /*Azul Oscuro*/
 
-          "secondary": "#05C7F2",
+          "secondary": "#F20D0F", /*Rojo Oscuro*/
 
-          "accent": "#1FB2A5",
+          "accent": "#00B0EB", /*Azul cielo*/
 
-          "neutral": "#191D24",
+          "neutral": "#191D24",/*Negro*/
 
-          "base-100": "#2A303C",
+          "base-100": "#271e1e",/*gris*/
 
-          "info": "#989ab3",
+          "info": "#d9e4ee", /*Blanco gris */
 
           "success": "#05C7F2",
 
-          "warning": "#F2E205",
+          "warning": "#FFBC0D", /*Amarillo Mostaza*/
 
-          "error": "#F87272",
+          "error": "#191D24", /*Rojo Opaco */
         },
       },
     ],

@@ -1,0 +1,29 @@
+{
+     "navbar" : {
+        "home" : "Home",
+        "products":"Products",
+        "contact": "Contacts"
+     },
+     "footer" : {
+        "foot":"FOOT FAST",
+        "copyr":"Copyright "
+    },
+    "form":{
+        "name":"What is your name?",
+        "id":"What is your id?",
+        "email":"What is your email?",
+        "direction":"What is your direction?",
+        "order":"What is your order?",
+        "title":"Make an order ✍🏼",
+        "label_name":"Jhon Watson",
+        "label_direc":"City, town, street max(100)",
+        "label_order":"Select your Order"
+    },
+    "btn":{
+        "btn-form":"SUBMIT ORDER"
+    },
+    "api":{
+        "paymet":"Paymet"
+    }
+
+}
