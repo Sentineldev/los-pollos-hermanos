@@ -3,20 +3,22 @@ import axios from 'axios';
 import { DatabaseDish } from '../shared/interfaces/database-dish.interface';
 import { Order } from '../shared/classes/Order.class';
 import { OrderDish } from '../shared/classes/OrderDish.class';
+import {useTranslation} from "react-i18next";
 
 
 interface Platillo {
-  plate_id: string,
-  name: string,
-  description: string,
-  price:  number
+  plate_id: string;
+  name: string;
+  description: string;
+  price: number;
 }
 interface ElementoPedido{
   platillo: Platillo,
-  conteo: number,
+  conteo: number;
 }
 
 function Formulario() {
+  const [t] = useTranslation("global"); //Para la traduccion
 
     const[values,setValues] = useState({
     nombre: "",
@@ -39,27 +41,26 @@ function Formulario() {
     const loadProducts = async () =>{
       try {
         const request = await axios.get("/api/dish")
-      if(request.status === 200){
-        
-        const platillos: DatabaseDish[] = request.data;
-        const lista_platillos: Platillo[] = platillos.map((elemento: DatabaseDish) => {
-          return { 
-            plate_id: String(elemento.dish_id),
-            name: elemento.name,
-            description: elemento.description,
-            price: elemento.price
-          }
-        })
-        setListaPlatillos(lista_platillos);
-      }
-      else{
-        alert("No se pudieron cargar los platillos, intente denuevo 😢.")
-      }
+        if(request.status === 200){
+          
+          const platillos: DatabaseDish[] = request.data;
+          const lista_platillos: Platillo[] = platillos.map((elemento: DatabaseDish) => {
+            return { 
+              plate_id: String(elemento.dish_id),
+              name: elemento.name,
+              description: elemento.description,
+              price: elemento.price
+            }
+          })
+          setListaPlatillos(lista_platillos);
+        }
+        else{
+          alert("No se pudieron cargar los platillos, intente denuevo 😢.")
+        }
       } catch (error) {
         alert("No se pudieron cargar los platillos, intente denuevo 😢.")
       }
-
-    }
+    };
 
     loadProducts();
    },[])
@@ -147,10 +148,11 @@ function Formulario() {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
+
   const handleSubmit = async (e: any) => {
     e.preventDefault(); // Evita el comportamiento predeterminado de recargar la página al enviar el formulario
-    setResponse("");
-    if(pedido === ""){
+    setResponse('');
+    if (pedido === '') {
       return;
     }
 
@@ -193,61 +195,134 @@ function Formulario() {
       
     } catch (error) {
       setResponse("Hubo un error al realizar su pedido 😢. Por favor intente denuevo ");
+
     }
     
   };
 
-
   return (
-        <form className="tracking-wide font-bold text-lg  " onSubmit={handleSubmit}>
-          <div className='flex justify-between'>
-                        <div className="mb-1">
-                            <label className="label" htmlFor="nombre"> Nombre:</label>
-                            <input required className="input  text-info input-bordered w-full" type="text" id="nombre" name="nombre" value={values.nombre} onChange={handleChange} placeholder = "nombre y apellido" />
-                        </div>
 
-                        <div className="mb-1 ml-1">
-                            <label className="label" htmlFor="cedula">Cedula:</label>
-                            <input required className="input text-info input-bordered w-full" type="number" id="cedula" name="cedula" value={values.cedula} onChange={handleChange} placeholder = "numero de cedula:"/>
-                        </div>
-           </div>
-            
-           <div className='flex justify-between'>
-            <div className="mb-1 flex-initial w-72">
-                <label className="label" htmlFor="direccion">Direccion: </label>
-                <textarea required className="input text-info input-bordered  w-full" id="direccion"  name="direccion" rows={1} value={values.direccion} onChange={handleChange} placeholder = "Ubicacion para la entrega" ></textarea>
+    <form className="mi-form w-full font-bold text-info text-lg" onSubmit={handleSubmit}>
+      <div className="flex justify-between">
+        <div className="m-1">
+          <div className="form-control w-full max-w-xs">
+            <label className="label" htmlFor="nombre">
+              <span className="label-text text-info">{t("form.name")}</span>
+            </label>
+            <input
+              type="text"
+              id="nombre"
+              name="nombre"
+              value={values.nombre}
+              onChange={handleChange}
+              required
+              placeholder={t("form.label_name")}
+              className="input shadow-lg input-ghost w-full  max-w-xs"
+            />
+          </div>
+        </div>
+
+        <div className="m-1">
+          <label className="label" htmlFor="cedula">
+            <span className="label-text text-info ">{t("form.id")}</span>
+          </label>
+          <input
+            required
+            className="input shadow-lg  input-ghost w-full max-w-xs"
+            type="number"
+            id="cedula"
+            name="cedula"
+            value={values.cedula}
+            onChange={handleChange}
+            placeholder="1234567"
+          />
+        </div>
+      </div>
+
+      
+
+      <div className="">
+        <label className="label" htmlFor="correo_electronico">
+          <span className="label-text text-info">{t("form.email")}</span>
+        </label>
+
+        <input
+          required
+          className="input resize-none shadow-lg input-ghost w-full"
+          id="correo_electronico"
+          type="email"
+          name="correo_electronico"
+          value={values.correo_electronico}
+          onChange={handleChange}
+          placeholder="lospolloshermanos@email.com"
+        />
+      </div>
+
+      <div className="">
+        <label className="label" htmlFor="direccion">
+          <span className="label-text  text-info">{t("form.direction")}</span>
+        </label>
+        <textarea
+          required
+          maxLength="100"
+          className="input  resize-none shadow-lg  input-ghost w-full"
+          id="direccion"
+          name="direccion"
+          rows={2}
+          value={values.direccion}
+          onChange={handleChange}
+          placeholder={t("form.label_direc")}
+        ></textarea>
+      </div>
+
+      <label className="label mt-2 mb-2" htmlFor="pedido">
+        <span className="label-text text-info">{t("form.order")}</span>
+      </label>
+      <div className="flex flex-col  gap-2">
+        {listaPlatillos.map((platillo: Platillo) => (
+          <div
+            key={platillo.plate_id}
+            className=" flex  flex-row text-sm rounded text-start px-2 shadow-lg "
+          >
+            <span className="indicator-item badge badge-success">
+              {platillo.price + '$'}
+            </span>
+            <p className=" self-center mx-2 flex-col w-1/2 text-base">
+              {platillo.name}
+            </p>
+
+            <div
+              onClick={(e) => BotonAgregarManejador(e, platillo)}
+              className=" mx-1 p-2 btn-circle btn text-2xl btn-ghost"
+            >
+              +
             </div>
-
-            <div className="mb-1 flex-auto  ml-2 ">
-                <label className="label" htmlFor="correo_electronico">Gmail:</label>
-
-                <input required className="input text-info  input-bordered w-full" id="correo_electronico" type="email" name="correo_electronico" value={values.correo_electronico} onChange={handleChange} placeholder = "Correo Electronico" />
+            <div
+              onClick={(e) => BotonRemoverManejador(e, platillo)}
+              className=" mx-1 btn-circle  text-2xl  btn btn-ghost "
+            >
+              -
             </div>
           </div>
+        ))}
+      </div>
 
+      <textarea
+        className="textarea text-info input-ghost resize-none input-bordered w-full mt-3"
+        id="pedido"
+        name="pedido"
+        rows={7}
+        readOnly
+        value={pedido}
+        onChange={handleChange}
+        placeholder={t("form.label_order")}
+      ></textarea>
 
-            <div className="mb-1">
-                <label className="label" htmlFor="pedido">Pedido: </label>
-                <div className='flex flex-col  gap-2'>
-                  {
-                    listaPlatillos.map((platillo: Platillo) =>
-                      <div className=' flex flex-row bg-base-100 text-info p-0  text-center rounded-md text-start px-4 shadow-lg shadow-slate-400'>
-                        
-                          <p className=' self-center col-span-2 text-base'>{platillo.name}</p>
-                          <button type='button' onClick={(e) => BotonAgregarManejador(e,platillo)} className=' mx-1 btn-circle btn text-2xl btn-ghost'>+</button>
-                          <button type='button' onClick={(e) => BotonRemoverManejador(e,platillo)} className=' mx-1 btn-circle text-2xl  btn btn-ghost '>-</button>
-                        </div>
-                      
-
-                    )
-                  }
-                </div>
-
-                <textarea className="textarea text-info input-bordered w-full mt-3" id="pedido" name="pedido" rows={7} readOnly value={pedido} onChange={handleChange} placeholder = "Que deseas LLevar?" ></textarea>
-            </div>
-            {response.length > 0 ? <p>{response}</p> : <></>}
-            <button className="btn btn-primary text-neutral w-full rounded" type="submit"> ENVIAR </button>
-        </form>
+      {response.length > 0 ? <p>{response}</p> : <></>}
+      <button className="btn btn-outline w-1/2 btn-success" type="submit">
+      {t("btn.btn-form")}
+      </button>
+    </form>
   );
 }
 

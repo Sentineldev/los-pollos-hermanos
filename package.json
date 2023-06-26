@@ -5,6 +5,7 @@
   "scripts": {},
   "private": true,
   "dependencies": {
+    "@googlemaps/react-wrapper": "^1.1.35",
     "@nestjs/common": "^9.1.1",
     "@nestjs/core": "^9.1.1",
     "@nestjs/mapped-types": "^1.2.2",
@@ -14,9 +15,14 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "daisyui": "^2.51.6",
+    "i18next": "^23.2.2",
+    "mapbox-gl": "^2.15.0",
     "nodemailer": "^6.9.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-i18next": "^13.0.0",
+    "react-map-gl": "^7.0.25",
+    "react-router-dom": "^6.13.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
     "tslib": "^2.3.0"

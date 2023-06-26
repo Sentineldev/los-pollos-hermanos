@@ -1,0 +1,31 @@
+{
+    "navbar" : {
+        "home" : "Inicio",
+        "products":"Productos",
+        "contact": "Contactos"
+    },
+
+    "footer" : {
+        "foot":"COMIDA RAPIDA",
+        "copyr":"Derechos reservados "
+    },
+    "form":{
+        "name":"Nombre",
+        "id":"Cedula",
+        "email":"Correo Electronico",
+        "direction":"Direccion para la entrega",
+        "order":"Seleccione los productos",
+        "title":"Anotando Pedido ✍🏼",
+        "label_name":"Juan Gonzalez",
+        "label_direc":"Ciudad, Calle, Municipio max(100)",
+        "label_order":"Seleccione los combos"
+    },
+    "btn":{
+        "btn-form":"ENVIAR PEDIDO"
+    },
+    "api":{
+        "paymet":"Total a Pagar"
+    }
+
+
+}
