@@ -24,6 +24,7 @@ const [t] = useTranslation("global");
           <a className="link link-hover">{t("navbar.home")}</a>
           <a className="link link-hover">{t("navbar.products")}</a>
           <a className="link link-hover">{t("navbar.contact")}</a>
+
         </div>
         <div>
           <div className="grid grid-flow-col gap-4">
