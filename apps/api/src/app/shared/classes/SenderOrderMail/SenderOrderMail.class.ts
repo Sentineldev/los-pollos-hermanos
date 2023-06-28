@@ -86,7 +86,7 @@ export class SenderOrderMail implements SenderOrder{
     private async sendConfirmationOrderToClient(order: Order): Promise<boolean>{
         const template = orderConfirmationTemplate(order);
         const subject = "Los Pollos Hermanos - Confirmacion de Pedido";
-        const email_options = this.buildEmailOptions(this.transporter_email, order.email, subject, template);
+        const email_options = this.buildEmailOptions(this.transporter_email, order.getEmail(), subject, template);
         
         const result = await this.transporter.sendMail(email_options);
         return result.rejected.length === 0 ? true : false;

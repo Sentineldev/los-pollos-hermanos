@@ -6,26 +6,33 @@
 
 Clase que representa una orden del restaurante realizada por un cliente.
 */
+import { ClientInterface } from "../interfaces/client.interface";
 import { OrderDish } from "./OrderDish.class";
+import { v4 as uuidv4 } from 'uuid';
+
+
 export class Order{
 
-    public client_name: string;
-    public client_id: string;
-    public email: string;
-    public address: string;
-    private dishes: OrderDish[];
+    
+    private order_id: string;
     private order_bill: number;
+    private client: ClientInterface;
+    private dishes: OrderDish[];
 
 
     
     constructor(client_name: string, client_id: string, email: string, address: string){
 
-        this.client_name = client_name;
-        this.client_id = client_id;
-        this.email = email;
-        this.address = address;
+        this.client = {
+            client_id,
+            client_name,
+            email,
+            address,
+        }
         this.order_bill = 0;
         this.dishes = [];
+
+        this.order_id =  uuidv4();
     }
     
 
@@ -36,7 +43,27 @@ export class Order{
     getDishes(): OrderDish[]{
         return this.dishes;
     }
-    
+    getId(): string {
+        return this.order_id;
+    }
+
+    getEmail(): string {
+        return this.client.email;
+    }
+    getName(): string {
+        return this.client.client_name;
+    }
+    getAddress(): string {
+        return this.client.address;
+    }
+    getClientId(): string {
+        return this.client.client_id;
+    }
+
+
+    setId(id: string) {
+        this.order_id = id;
+    }
 
     //Se colocan los platillos en la orden y se calcula el monto a cancelar.
     setDishes(dishes: OrderDish[]) {

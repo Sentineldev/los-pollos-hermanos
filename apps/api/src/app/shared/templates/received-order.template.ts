@@ -13,10 +13,10 @@ export function receivedOrderTemplate(order: Order): string{
     <div style=" border-radius:0.45rem;  background-color: #F2E205; font-family: sans-serif;" class="mail-body">
         <h1 style="padding:1rem; color:#021F59; font-family:sans-serif; border-bottom:3px solid #aaaa;">Nuevo Pedido</h1>
         <div style="padding:0 1rem;">
-            <p style="font-size:1rem; font-weight:500;">Cliente: ${order.client_name}</p>
-            <p style="font-size:1rem; font-weight:500;">Cedula: ${order.client_id}</p>
-            <p style="font-size:1rem; font-weight:500;">Correo Electronico: ${order.email}</p>
-            <p style="font-size:1rem; font-weight:500;">Direccion: ${order.address}</p>
+            <p style="font-size:1rem; font-weight:500;">Cliente: ${order.getName()}</p>
+            <p style="font-size:1rem; font-weight:500;">Cedula: ${order.getClientId()}</p>
+            <p style="font-size:1rem; font-weight:500;">Correo Electronico: ${order.getEmail()}</p>
+            <p style="font-size:1rem; font-weight:500;">Direccion: ${order.getAddress()}</p>
             <p style="font-size:1rem; font-weight:500;">Total a cancelar: ${order.getBill()}$</p>
             <p style="font-size:1rem; font-weight:500;">Pedido</p>
             <pre style="font-size:1rem; font-weight:700;">${order_dishes.join("")}</pre>
@@ -42,9 +42,9 @@ export function  orderConfirmationTemplate(order: Order): string{
         <h1 style="padding:1rem; color:#021F59; font-family:sans-serif; border-bottom:3px solid #aaaa;">Hemos Recibido tu pedido, nos pondremos en contacto contigo pronto!</h1>
         <div style="padding:0 1rem;">
             <p style="font-size:1rem; font-weight:500;">Hola! revisa los siguientes datos para que todo este en orden :)</p>
-            <p style="font-size:1rem; font-weight:500;">Tu Nombre: ${order.client_name}</p>
-            <p style="font-size:1rem; font-weight:500;">La Cedula: ${order.client_id}</p>
-            <p style="font-size:1rem; font-weight:500;">Direccion: ${order.address}</p>
+            <p style="font-size:1rem; font-weight:500;">Tu Nombre: ${order.getName()}</p>
+            <p style="font-size:1rem; font-weight:500;">La Cedula: ${order.getClientId()}</p>
+            <p style="font-size:1rem; font-weight:500;">Direccion: ${order.getAddress()}</p>
             <p style="font-size:1rem; font-weight:500;">Total a cancelar: ${order.getBill()}$</p>
             <p style="font-size:1rem; font-weight:500;">Pedido</p>
             <pre style="font-size:1rem; font-weight:700;">${order_dishes.join("")}</pre>

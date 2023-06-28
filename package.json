@@ -11,12 +11,15 @@
     "@nestjs/mapped-types": "^1.2.2",
     "@nestjs/platform-express": "^9.1.1",
     "@swc/helpers": "~0.5.0",
+    "@types/uuid": "^9.0.2",
     "axios": "^1.4.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "daisyui": "^2.51.6",
+    "fireorm": "^0.23.3",
     "i18next": "^23.2.2",
     "mapbox-gl": "^2.15.0",
+    "nestjs-fireorm": "^1.1.0",
     "nodemailer": "^6.9.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -25,7 +28,8 @@
     "react-router-dom": "^6.13.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@nestjs/schematics": "^9.1.0",
